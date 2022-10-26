@@ -184,6 +184,12 @@ class TiendaTest {
 			List<Producto> listProd = prodHome.findAll();		
 						
 			//TODO STREAMS
+			List<String> listNomPreMayus = listProd.stream()
+					.map(p -> "Nombre: " + p.getNombre().toUpperCase() + " , Precio: " + p.getPrecio())
+					.collect(toList());
+			
+			listNomPreMayus.forEach(System.out::println);
+			
 		
 			prodHome.commitTransaction();
 		}
@@ -208,6 +214,11 @@ class TiendaTest {
 			List<Fabricante> listFab = fabHome.findAll();
 					
 			//TODO STREAMS
+			List<String> listNomMayus = listFab.stream()
+					.map(f -> "Nombre: " + f.getNombre() + " , " + f.getNombre().substring(0, 2).toUpperCase())
+					.collect(toList());
+			
+			listNomMayus.forEach(System.out::println);
 					
 			fabHome.commitTransaction();
 		}
@@ -231,6 +242,13 @@ class TiendaTest {
 			List<Fabricante> listFab = fabHome.findAll();
 					
 			//TODO STREAMS
+			List<Integer> listCod = listFab.stream()
+					.filter(f -> !(f.getProductos().isEmpty()))
+					.map(Fabricante::getCodigo)
+					.collect(toList());
+			
+			listCod.forEach(System.out::println);
+			
 		
 			fabHome.commitTransaction();
 		}
@@ -254,6 +272,12 @@ class TiendaTest {
 			List<Fabricante> listFab = fabHome.findAll();
 					
 			//TODO STREAMS
+			List<String> listNom = listFab.stream()
+					.map(Fabricante::getNombre)
+					.sorted(reverseOrder())
+					.collect(toList());
+			
+			listNom.forEach(System.out::println);
 		
 			fabHome.commitTransaction();
 		}
@@ -276,6 +300,21 @@ class TiendaTest {
 			List<Producto> listProd = prodHome.findAll();		
 						
 			//TODO STREAMS
+			List<String> listNom = listProd.stream()
+					.map(Producto::getNombre)
+					.sorted()
+					.collect(toList());
+			
+			List<Double> listPrec = listProd.stream()
+					.map(Producto::getPrecio)
+					.sorted(reverseOrder())
+					.collect(toList());
+			
+			System.out.println("NOMBRE:");
+			listNom.forEach(System.out::println);
+			System.out.println("-----------------------------------------------");
+			System.out.println("PRECIOS:");
+			listPrec.forEach(System.out::println);
 			
 			prodHome.commitTransaction();
 		}
