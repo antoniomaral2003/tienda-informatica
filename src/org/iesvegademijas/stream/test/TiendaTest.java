@@ -339,6 +339,12 @@ class TiendaTest {
 			List<Fabricante> listFab = fabHome.findAll();
 					
 			//TODO STREAMS
+			listFab.stream()
+			.filter(f -> f.getCodigo() > 0)
+			.limit(5)
+			.collect(toList());
+			
+			listFab.forEach(System.out::println);
 		
 			fabHome.commitTransaction();
 		}
@@ -362,6 +368,12 @@ class TiendaTest {
 			List<Fabricante> listFab = fabHome.findAll();
 					
 			//TODO STREAMS
+			listFab.stream()
+			.filter(f -> f.getCodigo() > 3)
+			.limit(2)
+			.collect(toList());
+			
+			listFab.forEach(System.out::println);
 		
 			fabHome.commitTransaction();
 		}
@@ -384,6 +396,13 @@ class TiendaTest {
 			List<Producto> listProd = prodHome.findAll();		
 						
 			//TODO STREAMS
+			List<String> listProdBarato = listProd.stream()
+					.map(p -> p.getNombre() + " , " + p.getPrecio())
+					.sorted(reverseOrder())
+					.skip(8)
+					.collect(toList());
+			
+			listProdBarato.forEach(System.out::println);
 				
 			prodHome.commitTransaction();
 		}
