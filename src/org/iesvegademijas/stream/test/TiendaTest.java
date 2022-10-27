@@ -745,9 +745,11 @@ class TiendaTest {
 			//TODO STREAMS
 			var lista = listProd.stream()
 					.filter(p -> p.getPrecio() >= 180)
+					.sorted(comparing(Producto::getPrecio, reverseOrder()).thenComparing(Producto::getNombre))
 					.map(p -> p.getNombre() + " , " + p.getPrecio())
-					.sorted()
 					.collect(toList());
+			
+			lista.forEach(System.out::println);
 				
 			prodHome.commitTransaction();
 		}
@@ -772,6 +774,12 @@ class TiendaTest {
 			List<Producto> listProd = prodHome.findAll();
 			
 			//TODO STREAMS
+			var lista = listProd.stream()
+					.map(p -> p.getFabricante().getNombre() + " , " + p.getPrecio() + " , " + p.getNombre())
+					.sorted()
+					.collect(toList());
+			
+			lista.forEach(System.out::println);
 			
 			prodHome.commitTransaction();
 		}
@@ -795,6 +803,11 @@ class TiendaTest {
 			List<Producto> listProd = prodHome.findAll();
 			
 			//TODO STREAMS
+			var lista = listProd.stream()
+					.collect(maxBy(comparing(Producto::getPrecio)))
+					.map(p -> p.getNombre() + " , " + p.getPrecio() + " , " + p.getFabricante().getNombre());
+			
+			lista.ifPresent(System.out::println);
 			
 			prodHome.commitTransaction();
 		}
@@ -818,6 +831,11 @@ class TiendaTest {
 			List<Producto> listProd = prodHome.findAll();
 			
 			//TODO STREAMS
+			var lista = listProd.stream()
+					.filter(p -> p.getFabricante().getNombre().equals("Crucial") && p.getPrecio() > 200)
+					.collect(toList());
+			
+			lista.forEach(System.out::println);
 			
 			prodHome.commitTransaction();
 		}
@@ -841,6 +859,13 @@ class TiendaTest {
 			List<Producto> listProd = prodHome.findAll();
 			
 			//TODO STREAMS
+			Set<String> fabricantes = Set.of("Asus", "Hewlett-Packard", "Seagate");
+			
+			var lista = listProd.stream()
+					.filter(p -> fabricantes.contains(p.getFabricante().getNombre()))
+					.collect(toList());
+			
+			lista.forEach(System.out::println);
 			
 			prodHome.commitTransaction();
 		}
@@ -1043,6 +1068,11 @@ Fabricante: Xiaomi
 						
 			//TODO STREAMS
 			
+			var media = listProd.stream()
+					.collect(averagingDouble(Producto::getPrecio));
+			
+			System.out.println(media);
+			
 			prodHome.commitTransaction();
 		}
 		catch (RuntimeException e) {
@@ -1065,6 +1095,10 @@ Fabricante: Xiaomi
 			List<Producto> listProd = prodHome.findAll();		
 						
 			//TODO STREAMS
+			var masBarato = listProd.stream()
+					.collect(minBy(comparing(Producto::getPrecio)));
+			
+			System.out.println(masBarato);
 			
 			prodHome.commitTransaction();
 		}
@@ -1088,6 +1122,10 @@ Fabricante: Xiaomi
 			List<Producto> listProd = prodHome.findAll();		
 						
 			//TODO STREAMS
+			var suma = listProd.stream()
+					.collect(summingDouble(Producto::getPrecio));
+			
+			System.out.println(suma);
 			
 			prodHome.commitTransaction();
 		}
@@ -1111,6 +1149,11 @@ Fabricante: Xiaomi
 			List<Producto> listProd = prodHome.findAll();		
 						
 			//TODO STREAMS
+			var prodAsus = listProd.stream()
+					.filter(p -> p.getFabricante().getNombre().equals("Asus"))
+					.count();
+			
+			System.out.println(prodAsus);
 			
 			prodHome.commitTransaction();
 		}
@@ -1134,6 +1177,11 @@ Fabricante: Xiaomi
 			List<Producto> listProd = prodHome.findAll();		
 						
 			//TODO STREAMS
+			var media = listProd.stream()
+					.filter(p -> p.getFabricante().getNombre().equals("Asus"))
+					.collect(averagingDouble(Producto::getPrecio));
+			
+			System.out.println(media);
 			
 			prodHome.commitTransaction();
 		}
@@ -1272,6 +1320,12 @@ Hewlett-Packard              2
 			List<Fabricante> listFab = fabHome.findAll();
 				
 			//TODO STREAMS
+			var lista = listFab.stream()
+					.filter(f -> f.getProductos().size() >= 2)
+					.map(Fabricante::getNombre)
+					.collect(toList());
+			
+			lista.forEach(System.out::println);
 		
 			fabHome.commitTransaction();
 		}
@@ -1296,6 +1350,7 @@ Hewlett-Packard              2
 			List<Fabricante> listFab = fabHome.findAll();
 				
 			//TODO STREAMS
+			
 		
 			fabHome.commitTransaction();
 		}
@@ -1320,6 +1375,7 @@ Hewlett-Packard              2
 			List<Fabricante> listFab = fabHome.findAll();
 				
 			//TODO STREAMS
+		
 		
 			fabHome.commitTransaction();
 		}
